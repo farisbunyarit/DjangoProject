@@ -1,0 +1,156 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login — Gear Ratio</title>
+
+    <link rel="stylesheet" href="{% static 'final_app.css' %}">
+</head>
+
+<body>
+
+<div style="
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#0b0b0b;
+    padding:20px;
+">
+
+    <div style="
+        width:100%;
+        max-width:420px;
+        background:#151515;
+        border:1px solid #2a2a2a;
+        padding:40px;
+        box-shadow:0 20px 60px rgba(0,0,0,.45);
+    ">
+
+        <div style="
+            text-align:center;
+            margin-bottom:30px;
+        ">
+            <div class="logo">
+                Gear <span>Ratio</span>
+            </div>
+
+            <p style="
+                color:#999;
+                margin-top:10px;
+            ">
+                Sign in to your account
+            </p>
+        </div>
+
+        {% if form.errors %}
+            <div style="
+                color:#ff7777;
+                background:rgba(255,0,0,.08);
+                border:1px solid rgba(255,0,0,.2);
+                padding:12px;
+                margin-bottom:20px;
+            ">
+                Username or password is incorrect.
+            </div>
+        {% endif %}
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            <div style="margin-bottom:20px;">
+                <label style="
+                    display:block;
+                    color:#ccc;
+                    margin-bottom:8px;
+                ">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    name="username"
+                    autocomplete="username"
+                    required
+                    style="
+                        width:100%;
+                        padding:13px;
+                        background:#0d0d0d;
+                        color:white;
+                        border:1px solid #333;
+                        outline:none;
+                        box-sizing:border-box;
+                    "
+                >
+            </div>
+
+            <div style="margin-bottom:25px;">
+                <label style="
+                    display:block;
+                    color:#ccc;
+                    margin-bottom:8px;
+                ">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    autocomplete="current-password"
+                    required
+                    style="
+                        width:100%;
+                        padding:13px;
+                        background:#0d0d0d;
+                        color:white;
+                        border:1px solid #333;
+                        outline:none;
+                        box-sizing:border-box;
+                    "
+                >
+            </div>
+
+            <button
+                type="submit"
+                style="
+                    width:100%;
+                    padding:14px;
+                    background:#c9a45c;
+                    color:#111;
+                    border:none;
+                    cursor:pointer;
+                    font-weight:600;
+                    letter-spacing:1px;
+                "
+            >
+                LOGIN
+            </button>
+
+        </form>
+
+        <div style="
+            text-align:center;
+            margin-top:25px;
+        ">
+            <a
+                href="/"
+                style="
+                    color:#c9a45c;
+                    text-decoration:none;
+                "
+            >
+                ← Back to shop
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

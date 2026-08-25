@@ -1,111 +1,146 @@
-```html
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gear Ratio — Motorcycle Parts & Components</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"> 
-<link rel="stylesheet" href="{% static 'final_app.css' %}"> 
-</head> 
-<body> 
- 
-<!-- HEADER --> 
-<header> 
-  <div class="logo">Gear <span>Ratio</span></div> 
-  <div class="header-right"> 
-    <span class="header-tagline">Premium Motorcycle Parts & Components</span> 
-    <button class="cart-btn" onclick="toggleCart()"> 
-      🛍 Cart <span class="cart-count" id="cartCount">0</span> 
-    </button> 
-  </div> 
-</header> 
- 
-<!-- HERO --> 
-<div class="hero"> 
-  <div class="hero-bg"></div> 
-  <div class="hero-content"> 
-    <div class="hero-tag">✦ New Parts Collection 2026 ✦</div> 
-    <h1>Built for<br>the Ride</h1> 
-    <p>Precision parts for serious motorcycle riders</p> 
-    <span class="hero-cta" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})"> 
-      Explore Parts ↓ 
-    </span> 
-  </div> 
-</div> 
- 
-<!-- PROMO BAR --> 
-<div class="promo-bar">✦ Free shipping on orders over $150 &nbsp;·&nbsp; New parts every week ✦</div> 
- 
-<!-- MAIN --> 
-<div class="main"> 
-  <aside class="sidebar"> 
-    <div class="sidebar-section"> 
-      <div class="sidebar-title">Browse Parts</div> 
-      <div id="categoryList"></div> 
-    </div> 
-    <div class="promo-card"> 
-      <h4>Riders Get More</h4> 
-      <p>Sign up for exclusive access to <strong>special offers</strong>, new parts, and premium performance upgrades from our experts.</p> 
-    </div> 
-  </aside> 
- 
-  <section id="shopSection"> 
-    <div class="products-header"> 
-      <h2 id="categoryTitle">All Products</h2> 
-      <div class="products-meta"> 
-        <span id="productCount"></span> 
-        <span style="margin-top:4px;color:var(--gold)">✦ New Parts</span> 
-      </div> 
-    </div> 
-    <div class="products-grid" id="productsGrid"></div> 
-  </section> 
-</div> 
- 
-<!-- FOOTER --> 
-<footer>© 2026 <span>Gear Ratio</span> · Premium Motorcycle Parts & Components · All Rights Reserved</footer> 
- 
-<!-- CART --> 
-<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div> 
-<div class="cart-panel" id="cartPanel"> 
-  <div class="cart-header"> 
-    <h2>Your Cart</h2> 
-    <button class="close-btn" onclick="toggleCart()">✕</button> 
-  </div> 
-  <div class="cart-items" id="cartItems"></div> 
-  <div class="cart-footer"> 
-    <div class="summary-row"><span>Items</span><span id="itemCount">0</span></div> 
-    <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div> 
-    <div class="summary-row"><span>Shipping</span><span id="shipping">—</span></div> 
-    <div class="summary-divider"></div> 
-    <div class="summary-total"> 
-      <span>Total</span> 
-      <span class="total-amount" id="grandTotal">$0.00</span> 
-    </div> 
-    <button class="checkout-btn" id="checkoutBtn" disabled onclick="checkout()">Proceed to Checkout →</button> 
-    <button class="clear-btn" onclick="clearCart()">Clear Cart</button> 
-    <div class="free-shipping-note" id="shippingNote"></div> 
-  </div> 
-</div> 
- 
-<!-- ORDER MODAL --> 
-<div class="modal-overlay" id="modalOverlay"> 
-  <div class="modal"> 
-    <div class="modal-icon">✅</div> 
-    <h3>Order Placed!</h3> 
-    <p>Thank you for shopping at Gear Ratio.<br>Your motorcycle parts order will ship within 2–3 business days.</p> 
-    <div class="modal-total" id="modalTotal"></div> 
-    <p style="font-size:10px;color:var(--border);letter-spacing:1px">A confirmation email has been sent to your inbox.</p> 
-    <button class="modal-close" onclick="closeModal()">Continue Shopping</button> 
-  </div> 
-</div> 
- 
-<!-- TOAST --> 
-<div class="toast" id="toast"></div> 
- 
-<script src="{% static 'final_app.js' %}"></script> 
- 
-</body> 
-</html> 
-```
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gear Ratio — Motorcycle Parts & Components</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'final_app.css' %}">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Gear <span>Ratio</span></div>
+    <div class="header-right">
+      <span class="header-tagline">Premium Motorcycle Parts & Components</span>
+      <div class="header-right">
+        
+        {% if user.is_authenticated %}
+
+        <span style="color:var(--gold); margin-right:15px;">
+          Hi, {{ user.username }}
+        </span>
+
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="cart-btn" style="margin-right:8px;">
+            Logout
+          </button>
+        </form>
+
+        {% else %}
+
+        <a href="{% url 'login' %}" class="cart-btn" style="text-decoration:none;">
+          Login
+        </a>
+
+        {% endif %}
+
+        <button class="cart-btn" onclick="toggleCart()">
+          🛍 Cart
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-tag">✦ New Parts Collection 2026 ✦</div>
+      <h1>Built for<br>the Ride</h1>
+      <p>Precision parts for serious motorcycle riders</p>
+      <span class="hero-cta" onclick="document.querySelector('.main').scrollIntoView({behavior:'smooth'})">
+        Explore Parts ↓
+      </span>
+    </div>
+  </div>
+
+  <!-- PROMO BAR -->
+  <div class="promo-bar">✦ Free shipping on orders over $150 &nbsp;·&nbsp; New parts every week ✦</div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Browse Parts</div>
+        <div id="categoryList"></div>
+      </div>
+      <div class="promo-card">
+        <h4>Riders Get More</h4>
+        <p>Sign up for exclusive access to <strong>special offers</strong>, new parts, and premium performance upgrades
+          from our experts.</p>
+      </div>
+    </aside>
+
+    <section id="shopSection">
+      <div class="products-header">
+        <h2 id="categoryTitle">All Products</h2>
+        <div class="products-meta">
+          <span id="productCount"></span>
+          <span style="margin-top:4px;color:var(--gold)">✦ New Parts</span>
+        </div>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>© 2026 <span>Gear Ratio</span> · Premium Motorcycle Parts & Components · All Rights Reserved</footer>
+
+  <!-- CART -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="close-btn" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="summary-row"><span>Items</span><span id="itemCount">0</span></div>
+      <div class="summary-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+      <div class="summary-row"><span>Shipping</span><span id="shipping">—</span></div>
+      <div class="summary-divider"></div>
+      <div class="summary-total">
+        <span>Total</span>
+        <span class="total-amount" id="grandTotal">$0.00</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn" disabled onclick="checkout()">Proceed to Checkout →</button>
+      <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+      <div class="free-shipping-note" id="shippingNote"></div>
+    </div>
+  </div>
+
+  <!-- ORDER MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-icon">✅</div>
+      <h3>Order Placed!</h3>
+      <p>Thank you for shopping at Gear Ratio.<br>Your motorcycle parts order will ship within 2–3 business days.</p>
+      <div class="modal-total" id="modalTotal"></div>
+      <p style="font-size:10px;color:var(--border);letter-spacing:1px">A confirmation email has been sent to your inbox.
+      </p>
+      <button class="modal-close" onclick="closeModal()">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  {{ products|json_script:"products-data" }}
+  {{ categories|json_script:"categories-data" }}
+  {{ cart_items|json_script:"cart-items-data" }}
+
+  <script src="{% static 'final_app.js' %}"></script>
+
+</body>
+
+</html>
