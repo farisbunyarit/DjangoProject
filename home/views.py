@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+from .forms import RegisterForm
 from .models import Product, Category, Cart, CartItem
 
 
@@ -41,6 +42,21 @@ def home(request):
         'products': products,
         'categories': categories,
         'cart_items': cart_items,
+    })
+
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = RegisterForm()
+
+    return render(request, 'registration/register.html', {
+        'form': form
     })
 
 
