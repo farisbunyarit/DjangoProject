@@ -833,6 +833,13 @@ def ai_api(request):
 
         answer = ask_ai(messages)
 
+        mentioned_products = []
+
+        for product in Product.objects.all():
+            if product.name.lower() in answer.lower():
+                mentioned_products.append(product.id)
+
+
         # =========================
         # SAVE AI MESSAGE
         # =========================
@@ -851,7 +858,8 @@ def ai_api(request):
             {
                 'success': True,
                 'response': answer,
-                'conversation_id': conversation.id
+                'conversation_id': conversation.id,
+                'product_ids': mentioned_products,
             },
             status=status.HTTP_200_OK
         )

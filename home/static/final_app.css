@@ -511,3 +511,584 @@
     .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
     .card-image { height: 200px; }
   }
+  /* =========================================
+   AI ASSISTANT - FORCE STYLE
+   ========================================= */
+
+.ai-assistant-btn {
+    position: fixed !important;
+    right: 30px !important;
+    bottom: 30px !important;
+    z-index: 99999 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    min-width: 150px !important;
+    height: 52px !important;
+    padding: 0 22px !important;
+
+    background: #1A1410 !important;
+    color: #F5F0E8 !important;
+
+    border: 1px solid #B8955A !important;
+    border-radius: 30px !important;
+
+    cursor: pointer !important;
+
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+
+    box-shadow: 0 8px 30px rgba(0,0,0,.25) !important;
+}
+/* =========================================
+   AI PANEL - PREMIUM DESIGN
+   ========================================= */
+
+.ai-panel {
+    position: fixed !important;
+    right: 30px !important;
+    bottom: 95px !important;
+
+    width: 420px !important;
+    height: 600px !important;
+    max-height: calc(100vh - 120px) !important;
+
+    background: #FDFCFA !important;
+
+    border: 1px solid #E0D8CC !important;
+
+    box-shadow:
+        0 20px 60px rgba(26, 20, 16, 0.25),
+        0 4px 15px rgba(26, 20, 16, 0.12) !important;
+
+    z-index: 99998 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+    border-radius: 4px !important;
+}
+/* =========================================
+   GEAR RATIO AI - FINAL DESIGN
+   ========================================= */
+
+.ai-panel {
+    position: fixed !important;
+    right: 30px !important;
+    bottom: 95px !important;
+
+    width: 420px !important;
+    height: 600px !important;
+    max-height: calc(100vh - 120px) !important;
+
+    background: #FDFCFA !important;
+    border: 1px solid #E0D8CC !important;
+    border-radius: 6px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+    z-index: 99998 !important;
+
+    box-shadow:
+        0 25px 70px rgba(26, 20, 16, 0.28),
+        0 5px 20px rgba(26, 20, 16, 0.12) !important;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px) scale(0.98);
+
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease,
+        transform 0.25s ease;
+}
+
+.ai-panel.open {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+
+/* HEADER */
+
+.ai-header {
+    min-height: 76px;
+
+    padding: 18px 20px;
+
+    background: #1A1410 !important;
+    color: #F5F0E8 !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 2px solid #B8955A;
+}
+
+.ai-header strong {
+    display: block;
+
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 23px;
+    font-weight: 500;
+
+    letter-spacing: 2px;
+}
+
+.ai-header span {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    color: #B8955A;
+}
+
+
+/* CLOSE BUTTON */
+
+.ai-close {
+    width: 36px !important;
+    height: 36px !important;
+
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: transparent !important;
+
+    border: 1px solid rgba(245, 240, 232, 0.25) !important;
+
+    color: #F5F0E8 !important;
+
+    cursor: pointer !important;
+
+    font-size: 20px !important;
+    font-family: Arial, sans-serif !important;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.ai-close:hover {
+    background: #B8955A !important;
+    border-color: #B8955A !important;
+
+    color: #1A1410 !important;
+
+    transform: rotate(90deg);
+}
+
+
+/* MESSAGES */
+
+.ai-messages {
+    flex: 1 !important;
+
+    overflow-y: auto !important;
+
+    padding: 22px !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #FDFCFA 0%,
+            #F5F0E8 100%
+        ) !important;
+}
+
+.ai-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.ai-messages::-webkit-scrollbar-thumb {
+    background: #D4AF7A;
+}
+
+
+/* MESSAGE */
+
+.ai-message {
+    max-width: 82%;
+
+    padding: 13px 16px;
+
+    margin-bottom: 14px;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+
+    border-radius: 4px;
+
+    animation: aiMessageIn 0.25s ease;
+}
+
+@keyframes aiMessageIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* BOT MESSAGE */
+
+.ai-message.ai-bot {
+    background: #FFFFFF;
+
+    color: #2D2926;
+
+    border: 1px solid #E0D8CC;
+
+    border-left: 3px solid #B8955A;
+
+    margin-right: auto;
+}
+
+
+/* USER MESSAGE */
+
+.ai-message.ai-user,
+.ai-message.user {
+    background: #1A1410;
+
+    color: #F5F0E8;
+
+    border-right: 3px solid #B8955A;
+
+    margin-left: auto;
+}
+
+
+/* INPUT AREA */
+
+.ai-input-area {
+    padding: 16px;
+
+    background: #FFFFFF;
+
+    border-top: 1px solid #E0D8CC;
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* INPUT */
+
+.ai-input-area input {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 44px;
+
+    padding: 0 14px;
+
+    background: #F5F0E8;
+
+    border: 1px solid #E0D8CC;
+
+    outline: none;
+
+    color: #1A1410;
+
+    font-family: 'Montserrat', sans-serif;
+
+    font-size: 11px;
+
+    transition: border-color 0.2s ease;
+}
+
+.ai-input-area input:focus {
+    border-color: #B8955A;
+}
+
+.ai-input-area input::placeholder {
+    color: #7A6E64;
+}
+
+
+/* SEND */
+
+.ai-input-area button {
+    height: 44px;
+
+    padding: 0 20px;
+
+    background: #1A1410 !important;
+
+    color: #F5F0E8 !important;
+
+    border: 1px solid #1A1410 !important;
+
+    cursor: pointer;
+
+    font-family: 'Montserrat', sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.ai-input-area button:hover {
+    background: #B8955A !important;
+
+    color: #1A1410 !important;
+
+    border-color: #B8955A !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .ai-panel {
+        right: 10px !important;
+        left: 10px !important;
+        bottom: 80px !important;
+
+        width: auto !important;
+
+        height: calc(100vh - 100px) !important;
+
+        max-height: none !important;
+    }
+
+    .ai-assistant-btn {
+        right: 16px !important;
+        bottom: 16px !important;
+    }
+
+}
+/* =========================================
+   AI LOADING / TYPING
+   ========================================= */
+
+.ai-thinking {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 20px;
+}
+
+.ai-thinking-text {
+    margin-right: 4px;
+    color: #7A6E64;
+    font-size: 11px;
+}
+
+.ai-thinking-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #B8955A;
+
+    animation: aiTyping 1.2s infinite ease-in-out;
+}
+
+.ai-thinking-dot:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.ai-thinking-dot:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes aiTyping {
+    0%, 60%, 100% {
+        opacity: 0.25;
+        transform: translateY(0);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(-3px);
+    }
+}
+
+
+/* =========================================
+   AI SEND BUTTON - LOADING
+   ========================================= */
+
+.ai-input-area button.ai-loading {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.ai-input-area button.ai-loading::after {
+    content: ' ...';
+}
+/* =========================================
+   AI PRODUCT CARDS
+   ========================================= */
+
+.ai-product-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    margin: 12px 0;
+    padding: 16px;
+
+    background: #ffffff;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.ai-product-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+
+.ai-product-name {
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    color: var(--dark);
+}
+
+
+.ai-product-description {
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    color: var(--muted);
+}
+
+
+.ai-product-price {
+    font-size: 17px;
+    font-weight: 700;
+
+    color: var(--gold);
+
+    margin-top: 2px;
+}
+
+
+.ai-add-cart-btn {
+    width: 100%;
+
+    padding: 11px 14px;
+
+    margin-top: 4px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: var(--dark);
+    color: var(--cream);
+
+    cursor: pointer;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.ai-add-cart-btn:hover {
+    background: var(--gold);
+    color: var(--dark);
+
+    transform: translateY(-1px);
+}
+
+
+.ai-add-cart-btn:active {
+    transform: translateY(0);
+}
+/* =========================================
+   AI PRODUCT IMAGE
+   ========================================= */
+
+.ai-product-image {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f5f1eb;
+    margin-bottom: 10px;
+}
+
+.ai-product-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: none !important;
+    opacity: 1 !important;
+    transition: transform 0.3s ease;
+}
+
+.ai-product-card:hover .ai-product-image img {
+    transform: scale(1.04);
+    filter: none !important;
+}
+
+.ai-product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

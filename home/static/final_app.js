@@ -5,16 +5,16 @@ const categories = [
   { id: 'all', name: 'All Products', icon: '✦' },
   ...JSON.parse(document.getElementById('categories-data').textContent)
 ];
- 
-const products = JSON.parse(document.getElementById('products-data').textContent); 
- 
+
+const products = JSON.parse(document.getElementById('products-data').textContent);
+
 // ════════════════════════════════════════════ 
 //  STATE 
 // ════════════════════════════════════════════ 
-let selectedCategory = 'all'; 
+let selectedCategory = 'all';
 const quantities = {};
-const wishlist   = new Set();
-const cart       = {};
+const wishlist = new Set();
+const cart = {};
 
 const savedCart = JSON.parse(
   document.getElementById('cart-items-data').textContent
@@ -30,33 +30,33 @@ savedCart.forEach(item => {
     };
   }
 });
- 
-products.forEach(p => { quantities[p.id] = 1; }); 
- 
+
+products.forEach(p => { quantities[p.id] = 1; });
+
 // ════════════════════════════════════════════ 
 //  RENDER CATEGORIES 
 // ════════════════════════════════════════════ 
-function renderCategories() { 
-  document.getElementById('categoryList').innerHTML = categories.map(cat => { 
-    const count = cat.id === 'all' ? products.length : products.filter(p => p.category_id === cat.id).length; 
+function renderCategories() {
+  document.getElementById('categoryList').innerHTML = categories.map(cat => {
+    const count = cat.id === 'all' ? products.length : products.filter(p => p.category_id === cat.id).length;
     return ` 
       <button class="category-btn ${selectedCategory === cat.id ? 'active' : ''}" onclick="selectCategory('${cat.id}')"> 
         <span class="cat-icon">${cat.icon}</span> 
         ${cat.name} 
         <span class="cat-count">${count}</span> 
-      </button>`; 
-  }).join(''); 
-} 
- 
+      </button>`;
+  }).join('');
+}
+
 // ════════════════════════════════════════════ 
 //  RENDER PRODUCTS 
 // ════════════════════════════════════════════ 
-function renderProducts() { 
+function renderProducts() {
   const filtered = selectedCategory === 'all' ? products : products.filter(p => Number(p.category_id) === Number(selectedCategory));
-  const cat = categories.find(c => c.id === selectedCategory); 
-  document.getElementById('categoryTitle').textContent = cat.name; 
-  document.getElementById('productCount').textContent = `${filtered.length} product${filtered.length !== 1 ? 's' : ''}`; 
- 
+  const cat = categories.find(c => c.id === selectedCategory);
+  document.getElementById('categoryTitle').textContent = cat.name;
+  document.getElementById('productCount').textContent = `${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
+
   document.getElementById('productsGrid').innerHTML = filtered.map((p, i) => ` 
     <div class="product-card" style="animation-delay:${i * 0.06}s"> 
       <div class="card-image"> 
@@ -69,7 +69,7 @@ function renderProducts() {
         </button> 
       </div> 
       <div class="card-body"> 
-        <div class="card-category">${categories.find(c=>c.id===p.category_id)?.name||''}</div> 
+        <div class="card-category">${categories.find(c => c.id === p.category_id)?.name || ''}</div> 
         <div class="card-name">${p.name}</div> 
         <div class="card-desc">${p.description}</div> 
         <div class="card-price-row"> 
@@ -89,9 +89,9 @@ function renderProducts() {
         </button> 
       </div> 
     </div> 
-  `).join(''); 
-} 
- 
+  `).join('');
+}
+
 // ════════════════════════════════════════════ 
 //  CATEGORY 
 // ════════════════════════════════════════════ 
@@ -111,20 +111,20 @@ function selectCategory(catId) {
 // ════════════════════════════════════════════ 
 //  QUANTITY ON CARD 
 // ════════════════════════════════════════════ 
-function changeQty(id, delta) { 
-  quantities[id] = Math.max(1, Math.min(10, (quantities[id]||1) + delta)); 
-  const el = document.getElementById(`qty-${id}`); 
-  if (el) el.textContent = quantities[id]; 
-} 
- 
+function changeQty(id, delta) {
+  quantities[id] = Math.max(1, Math.min(10, (quantities[id] || 1) + delta));
+  const el = document.getElementById(`qty-${id}`);
+  if (el) el.textContent = quantities[id];
+}
+
 // ════════════════════════════════════════════ 
 //  WISHLIST 
 // ════════════════════════════════════════════ 
-function toggleWishlist(id, btn) { 
-  if (wishlist.has(id)) { wishlist.delete(id); btn.textContent = '🤍'; } 
-  else { wishlist.add(id); btn.textContent = '❤️'; showToast('Added to wishlist'); } 
-} 
- 
+function toggleWishlist(id, btn) {
+  if (wishlist.has(id)) { wishlist.delete(id); btn.textContent = '🤍'; }
+  else { wishlist.add(id); btn.textContent = '❤️'; showToast('Added to wishlist'); }
+}
+
 // ════════════════════════════════════════════ 
 //  ADD TO CART 
 // ════════════════════════════════════════════ 
@@ -192,7 +192,7 @@ async function addToCart(id) {
     showToast('Something went wrong');
   }
 }
- 
+
 // ════════════════════════════════════════════ 
 //  CART QTY 
 // ════════════════════════════════════════════ 
@@ -306,40 +306,40 @@ async function clearCart() {
     showToast('Something went wrong');
   }
 }
- 
+
 // ════════════════════════════════════════════ 
 //  UPDATE CART UI — PRICING ALGORITHM 
 // ════════════════════════════════════════════ 
-function updateCartUI() { 
-  const items      = Object.values(cart); 
-  const totalQty   = items.reduce((s,i) => s + i.qty, 0); 
-  const subtotal   = items.reduce((s,i) => s + i.product.price * i.qty, 0); 
-  const shipping   = subtotal === 0 ? 0 : subtotal >= 150 ? 0 : 9.99; 
-  const grandTotal = subtotal + shipping; 
- 
-  document.getElementById('cartCount').textContent  = totalQty; 
-  document.getElementById('itemCount').textContent  = `${totalQty} item${totalQty!==1?'s':''}`; 
-  document.getElementById('subtotal').textContent   = `$${subtotal.toFixed(2)}`; 
-  document.getElementById('shipping').textContent   = subtotal===0 ? '—' : shipping===0 ? 'FREE ✓' : `$${shipping.toFixed(2)}`; 
-  document.getElementById('grandTotal').textContent = `$${grandTotal.toFixed(2)}`; 
-  document.getElementById('checkoutBtn').disabled   = items.length === 0; 
- 
-  const note = document.getElementById('shippingNote'); 
-  note.textContent = subtotal>0 && subtotal<150 
-    ? `Add $${(150-subtotal).toFixed(2)} more for free shipping` 
-    : subtotal>=150 ? '✓ You qualify for free shipping!' : ''; 
- 
-  const itemsEl = document.getElementById('cartItems'); 
-  if (items.length === 0) { 
+function updateCartUI() {
+  const items = Object.values(cart);
+  const totalQty = items.reduce((s, i) => s + i.qty, 0);
+  const subtotal = items.reduce((s, i) => s + i.product.price * i.qty, 0);
+  const shipping = subtotal === 0 ? 0 : subtotal >= 150 ? 0 : 9.99;
+  const grandTotal = subtotal + shipping;
+
+  document.getElementById('cartCount').textContent = totalQty;
+  document.getElementById('itemCount').textContent = `${totalQty} item${totalQty !== 1 ? 's' : ''}`;
+  document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+  document.getElementById('shipping').textContent = subtotal === 0 ? '—' : shipping === 0 ? 'FREE ✓' : `$${shipping.toFixed(2)}`;
+  document.getElementById('grandTotal').textContent = `$${grandTotal.toFixed(2)}`;
+  document.getElementById('checkoutBtn').disabled = items.length === 0;
+
+  const note = document.getElementById('shippingNote');
+  note.textContent = subtotal > 0 && subtotal < 150
+    ? `Add $${(150 - subtotal).toFixed(2)} more for free shipping`
+    : subtotal >= 150 ? '✓ You qualify for free shipping!' : '';
+
+  const itemsEl = document.getElementById('cartItems');
+  if (items.length === 0) {
     itemsEl.innerHTML = ` 
       <div class="empty-cart"> 
         <div class="big-icon">🛍</div> 
         <p>Your cart is empty</p> 
         <small>Add items to get started</small> 
-      </div>`; 
-    return; 
-  } 
- 
+      </div>`;
+    return;
+  }
+
   itemsEl.innerHTML = items.map(item => ` 
     <div class="cart-item"> 
       <img class="cart-item-img" src="${item.product.image}" alt="${item.product.name}" 
@@ -358,51 +358,323 @@ function updateCartUI() {
         <button class="cart-remove" onclick="removeFromCart(${item.product.id})">Remove</button> 
       </div> 
       <div> 
-        <div class="cart-item-price">$${(item.product.price*item.qty).toFixed(2)}</div> 
+        <div class="cart-item-price">$${(item.product.price * item.qty).toFixed(2)}</div> 
         <div class="cart-item-unit">$${item.product.price} × ${item.qty}</div> 
       </div> 
     </div> 
-  `).join(''); 
-} 
- 
+  `).join('');
+}
+
 // ════════════════════════════════════════════ 
 //  CHECKOUT 
 // ════════════════════════════════════════════ 
-function checkout() { 
-  const items    = Object.values(cart); 
-  const subtotal = items.reduce((s,i) => s + i.product.price * i.qty, 0); 
-  const total    = subtotal + (subtotal<150 ? 9.99 : 0); 
-  document.getElementById('modalTotal').textContent = `Order Total: $${total.toFixed(2)}`; 
-  document.getElementById('modalOverlay').classList.add('open'); 
-  toggleCart(); 
-  Object.keys(cart).forEach(k => delete cart[k]); 
-  updateCartUI(); 
-} 
-function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); } 
- 
+function checkout() {
+  const items = Object.values(cart);
+  const subtotal = items.reduce((s, i) => s + i.product.price * i.qty, 0);
+  const total = subtotal + (subtotal < 150 ? 9.99 : 0);
+  document.getElementById('modalTotal').textContent = `Order Total: $${total.toFixed(2)}`;
+  document.getElementById('modalOverlay').classList.add('open');
+  toggleCart();
+  Object.keys(cart).forEach(k => delete cart[k]);
+  updateCartUI();
+}
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
 // ════════════════════════════════════════════ 
 //  CART TOGGLE 
 // ════════════════════════════════════════════ 
-function toggleCart() { 
-  document.getElementById('cartPanel').classList.toggle('open'); 
-  document.getElementById('cartOverlay').classList.toggle('open'); 
-} 
- 
+function toggleCart() {
+  document.getElementById('cartPanel').classList.toggle('open');
+  document.getElementById('cartOverlay').classList.toggle('open');
+}
+
 // ════════════════════════════════════════════ 
 //  TOAST 
 // ════════════════════════════════════════════ 
-let toastTimer; 
-function showToast(msg) { 
-  const t = document.getElementById('toast'); 
-  t.textContent = msg; 
-  t.classList.add('show'); 
-  clearTimeout(toastTimer); 
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2400); 
-} 
- 
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
 // ════════════════════════════════════════════ 
 //  INIT 
 // ════════════════════════════════════════════ 
-renderCategories(); 
-renderProducts(); 
+renderCategories();
+renderProducts();
 updateCartUI();
+// ════════════════════════════════════════════
+//  AI SHOPPING ASSISTANT
+// ════════════════════════════════════════════
+
+let currentConversationId = null;
+let aiIsLoading = false;
+
+
+// ════════════════════════════════════════════
+//  TOGGLE AI PANEL
+// ════════════════════════════════════════════
+
+function toggleAI() {
+
+  const panel = document.getElementById('aiPanel');
+
+  if (!panel) return;
+
+  panel.classList.toggle('open');
+
+  if (panel.classList.contains('open')) {
+
+    const input = document.getElementById('aiInput');
+
+    if (input) {
+      setTimeout(() => input.focus(), 150);
+    }
+
+  }
+
+}
+
+
+// ════════════════════════════════════════════
+//  ADD AI MESSAGE TO UI
+// ════════════════════════════════════════════
+
+function addAIMessage(text, type = 'bot') {
+
+  const messages = document.getElementById('aiMessages');
+
+  if (!messages) return;
+
+  const message = document.createElement('div');
+
+  message.className =
+    type === 'user'
+      ? 'ai-message ai-user'
+      : 'ai-message ai-bot';
+
+  message.textContent = text;
+
+  messages.appendChild(message);
+
+  messages.scrollTop = messages.scrollHeight;
+
+  return message;
+}
+
+
+// ════════════════════════════════════════════
+//  SEND AI MESSAGE
+// ════════════════════════════════════════════
+
+async function sendAIMessage() {
+
+  if (aiIsLoading) return;
+
+  const input = document.getElementById('aiInput');
+  const sendButton = document.querySelector('.ai-input-area button');
+
+  if (!input) return;
+
+  const message = input.value.trim();
+
+  if (!message) return;
+
+
+  // =========================================
+  // SHOW USER MESSAGE
+  // =========================================
+
+  addAIMessage(message, 'user');
+
+  input.value = '';
+
+  aiIsLoading = true;
+
+
+  // =========================================
+  // LOADING STATE
+  // =========================================
+
+  if (sendButton) {
+    sendButton.disabled = true;
+    sendButton.classList.add('ai-loading');
+    sendButton.textContent = '...';
+  }
+
+  const loadingMessage = addAIMessage(
+    'Thinking...',
+    'bot'
+  );
+
+
+  // =========================================
+  // SEND REQUEST
+  // =========================================
+
+  try {
+
+    const response = await fetch('/api/ai/', {
+
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
+      },
+
+      body: JSON.stringify({
+        message: message,
+        conversation_id: currentConversationId
+      })
+
+    });
+
+
+    const data = await response.json();
+
+
+    // =========================================
+    // REMOVE LOADING
+    // =========================================
+
+    if (loadingMessage) {
+      loadingMessage.remove();
+    }
+
+
+    // =========================================
+    // ERROR FROM SERVER
+    // =========================================
+
+    if (!response.ok || !data.success) {
+
+      addAIMessage(
+        data.error || 'Sorry, something went wrong.',
+        'bot'
+      );
+
+      return;
+    }
+
+
+    // =========================================
+    // SAVE CONVERSATION
+    // =========================================
+
+    currentConversationId = data.conversation_id;
+
+
+    // =========================================
+    // AI RESPONSE
+    // =========================================
+
+    addAIMessage(
+      data.response,
+      'bot'
+    );
+
+    // =========================================
+    // AI PRODUCT RECOMMENDATIONS
+    // =========================================
+
+    if (data.product_ids && data.product_ids.length > 0) {
+
+      const messages = document.getElementById('aiMessages');
+
+      data.product_ids.forEach(productId => {
+
+        const product = products.find(
+          p => Number(p.id) === Number(productId)
+        );
+
+        if (!product) return;
+
+        const card = document.createElement('div');
+
+        card.className = 'ai-product-card';
+
+        card.innerHTML = `
+  <div class="ai-product-image">
+    <img
+      src="${product.image}"
+      alt="${product.name}"
+      onerror="this.style.display='none';"
+    >
+  </div>
+
+  <div class="ai-product-info">
+
+    <div class="ai-product-name">
+      ${product.name}
+    </div>
+
+    <div class="ai-product-description">
+      ${product.description}
+    </div>
+
+    <div class="ai-product-price">
+      $${Number(product.price).toFixed(2)}
+    </div>
+
+    <button
+      class="ai-add-cart-btn"
+      onclick="addToCart(${product.id})">
+
+      Add to Cart
+
+    </button>
+
+  </div>
+`;
+
+
+        messages.appendChild(card);
+
+      });
+
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+
+
+  } catch (error) {
+
+    console.error('AI Error:', error);
+
+
+    if (loadingMessage) {
+      loadingMessage.remove();
+    }
+
+
+    addAIMessage(
+      'Unable to connect to the AI service. Please try again.',
+      'bot'
+    );
+
+
+  } finally {
+
+    // =========================================
+    // RESET
+    // =========================================
+
+    aiIsLoading = false;
+
+    if (sendButton) {
+      sendButton.disabled = false;
+      sendButton.classList.remove('ai-loading');
+      sendButton.textContent = 'Send';
+    }
+
+    input.focus();
+
+  }
+
+}
+
+
