@@ -2,16 +2,28 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Create Account — Gear Ratio</title>
 
-    <link rel="stylesheet" href="{% static 'final_app.css' %}">
+    <link
+        rel="stylesheet"
+        href="{% static 'final_app.css' %}"
+    >
+
 </head>
 
+
 <body>
+
 
 <div style="
     min-height:100vh;
@@ -22,6 +34,7 @@
     padding:20px;
 ">
 
+
     <div style="
         width:100%;
         max-width:420px;
@@ -31,24 +44,39 @@
         box-shadow:0 20px 60px rgba(0,0,0,.45);
     ">
 
+
+        <!-- LOGO -->
+
         <div style="
             text-align:center;
             margin-bottom:30px;
         ">
+
             <div class="logo">
-            <span>Gear Ratio</span>
+
+                <span>
+                    Gear Ratio
+                </span>
+
             </div>
+
 
             <p style="
                 color:#999;
                 margin-top:10px;
             ">
+
                 Create your account
+
             </p>
+
         </div>
 
 
+        <!-- FORM ERRORS -->
+
         {% if form.errors %}
+
             <div style="
                 color:#ff7777;
                 background:rgba(255,0,0,.08);
@@ -56,26 +84,43 @@
                 padding:12px;
                 margin-bottom:20px;
             ">
+
                 Please correct the errors below.
+
             </div>
+
         {% endif %}
 
+
+        <!-- REGISTER FORM -->
 
         <form method="post">
 
             {% csrf_token %}
 
 
-            <div style="margin-bottom:20px;">
-                <label style="
-                    display:block;
-                    color:#ccc;
-                    margin-bottom:8px;
-                ">
+            <!-- USERNAME -->
+
+            <div style="
+                margin-bottom:20px;
+            ">
+
+                <label
+                    for="id_username"
+                    style="
+                        display:block;
+                        color:#ccc;
+                        margin-bottom:8px;
+                    "
+                >
+
                     Username
+
                 </label>
 
+
                 <input
+                    id="id_username"
                     type="text"
                     name="username"
                     autocomplete="username"
@@ -92,28 +137,46 @@
                     "
                 >
 
+
                 {% if form.username.errors %}
+
                     <div style="
                         color:#ff7777;
                         font-size:13px;
                         margin-top:7px;
                     ">
+
                         {{ form.username.errors.0 }}
+
                     </div>
+
                 {% endif %}
+
             </div>
 
 
-            <div style="margin-bottom:20px;">
-                <label style="
-                    display:block;
-                    color:#ccc;
-                    margin-bottom:8px;
-                ">
+            <!-- EMAIL -->
+
+            <div style="
+                margin-bottom:20px;
+            ">
+
+                <label
+                    for="id_email"
+                    style="
+                        display:block;
+                        color:#ccc;
+                        margin-bottom:8px;
+                    "
+                >
+
                     Email
+
                 </label>
 
+
                 <input
+                    id="id_email"
                     type="email"
                     name="email"
                     autocomplete="email"
@@ -130,28 +193,46 @@
                     "
                 >
 
+
                 {% if form.email.errors %}
+
                     <div style="
                         color:#ff7777;
                         font-size:13px;
                         margin-top:7px;
                     ">
+
                         {{ form.email.errors.0 }}
+
                     </div>
+
                 {% endif %}
+
             </div>
 
 
-            <div style="margin-bottom:20px;">
-                <label style="
-                    display:block;
-                    color:#ccc;
-                    margin-bottom:8px;
-                ">
+            <!-- PASSWORD -->
+
+            <div style="
+                margin-bottom:20px;
+            ">
+
+                <label
+                    for="id_password1"
+                    style="
+                        display:block;
+                        color:#ccc;
+                        margin-bottom:8px;
+                    "
+                >
+
                     Password
+
                 </label>
 
+
                 <input
+                    id="id_password1"
                     type="password"
                     name="password1"
                     autocomplete="new-password"
@@ -167,28 +248,46 @@
                     "
                 >
 
+
                 {% if form.password1.errors %}
+
                     <div style="
                         color:#ff7777;
                         font-size:13px;
                         margin-top:7px;
                     ">
+
                         {{ form.password1.errors.0 }}
+
                     </div>
+
                 {% endif %}
+
             </div>
 
 
-            <div style="margin-bottom:25px;">
-                <label style="
-                    display:block;
-                    color:#ccc;
-                    margin-bottom:8px;
-                ">
+            <!-- CONFIRM PASSWORD -->
+
+            <div style="
+                margin-bottom:25px;
+            ">
+
+                <label
+                    for="id_password2"
+                    style="
+                        display:block;
+                        color:#ccc;
+                        margin-bottom:8px;
+                    "
+                >
+
                     Confirm Password
+
                 </label>
 
+
                 <input
+                    id="id_password2"
                     type="password"
                     name="password2"
                     autocomplete="new-password"
@@ -204,17 +303,25 @@
                     "
                 >
 
+
                 {% if form.password2.errors %}
+
                     <div style="
                         color:#ff7777;
                         font-size:13px;
                         margin-top:7px;
                     ">
+
                         {{ form.password2.errors.0 }}
+
                     </div>
+
                 {% endif %}
+
             </div>
 
+
+            <!-- SUBMIT -->
 
             <button
                 type="submit"
@@ -229,48 +336,69 @@
                     letter-spacing:1px;
                 "
             >
+
                 CREATE ACCOUNT
+
             </button>
+
 
         </form>
 
+
+        <!-- LOGIN LINK -->
 
         <div style="
             text-align:center;
             margin-top:25px;
             color:#999;
         ">
+
             Already have an account?
+
+
             <a
-                href="/accounts/login/"
+                href="{% url 'login' %}"
                 style="
                     color:#c9a45c;
                     text-decoration:none;
                 "
             >
+
                 Login
+
             </a>
+
         </div>
 
+
+        <!-- BACK TO SHOP -->
 
         <div style="
             text-align:center;
             margin-top:15px;
         ">
+
             <a
-                href="/"
+                href="{% url 'home' %}"
                 style="
                     color:#c9a45c;
                     text-decoration:none;
                 "
             >
+
                 ← Back to shop
+
             </a>
+
         </div>
+
 
     </div>
 
+
 </div>
 
+
 </body>
+
 </html>

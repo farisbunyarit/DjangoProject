@@ -1,0 +1,171 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard — Gear Ratio</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+
+<header class="admin-header">
+
+    <div class="admin-logo">
+        Gear <span>Ratio</span>
+    </div>
+
+    <div class="admin-title">
+        Administration Panel
+    </div>
+
+</header>
+
+
+<main class="admin-container">
+
+    <div class="admin-welcome">
+
+        <h1>Welcome, {{ user.username }}</h1>
+
+        <p>
+            Manage your store, products and users.
+        </p>
+
+    </div>
+
+
+    <div class="admin-grid">
+
+        <div class="admin-card">
+
+            <div class="admin-card-label">
+                Products
+            </div>
+
+            <div class="admin-card-value">
+                {{ products_count }}
+            </div>
+
+        </div>
+
+
+        <div class="admin-card">
+
+            <div class="admin-card-label">
+                Categories
+            </div>
+
+            <div class="admin-card-value">
+                {{ categories_count }}
+            </div>
+
+        </div>
+
+
+        <div class="admin-card">
+
+            <div class="admin-card-label">
+                Users
+            </div>
+
+            <div class="admin-card-value">
+                {{ users_count }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <section class="admin-section">
+
+        <div class="admin-section-header">
+
+            <h2>Manage Store</h2>
+
+        </div>
+
+
+        <div class="admin-actions">
+
+            <a
+                href="{% url 'admin_products' %}"
+                class="admin-btn gold"
+            >
+                Manage Products
+            </a>
+
+
+            <a
+                href="{% url 'admin_users' %}"
+                class="admin-btn gold"
+            >
+                Manage Users
+            </a>
+
+
+            <a
+                href="{% url 'add_product' %}"
+                class="admin-btn"
+            >
+                Add Product
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section class="admin-section">
+
+        <div class="admin-section-header">
+
+            <h2>Other Administration</h2>
+
+        </div>
+
+
+        <div class="admin-actions">
+
+            <a
+                href="/admin/"
+                class="admin-btn"
+            >
+                Django Admin
+            </a>
+
+
+            <a
+                href="/"
+                class="admin-btn"
+            >
+                Back To Store
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="admin-footer">
+
+    © 2026 <span>Gear Ratio</span> · Administration Panel
+
+</footer>
+
+</body>
+
+</html>

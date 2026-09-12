@@ -1,0 +1,199 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Users — Gear Ratio</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+
+<header class="admin-header">
+
+    <div class="admin-logo">
+        Gear <span>Ratio</span>
+    </div>
+
+    <div class="admin-title">
+        User Management
+    </div>
+
+</header>
+
+
+<main class="admin-container">
+
+    <div class="admin-welcome">
+
+        <h1>Users</h1>
+
+        <p>
+            Manage the users in your store.
+        </p>
+
+    </div>
+
+
+    <section class="admin-section">
+
+        <div class="admin-section-header">
+
+            <h2>All Users</h2>
+
+            <div class="admin-actions">
+
+                <a
+                    href="{% url 'admin_dashboard' %}"
+                    class="admin-btn"
+                >
+                    Back To Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="users-table">
+
+            {% if users %}
+
+                {% for user in users %}
+
+                    <div class="user-row">
+
+                        <div class="user-info">
+
+                            <div class="user-avatar">
+                                {{ user.username|first|upper }}
+                            </div>
+
+                            <div>
+
+                                <div class="user-name">
+                                    {{ user.username }}
+                                </div>
+
+                                <div class="user-email">
+                                    {{ user.email|default:"No email" }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="user-status">
+
+                            {% if user.is_active %}
+
+                                <span class="status-active">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-inactive">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="user-role">
+
+                            {% if user.is_staff %}
+
+                                <span class="role-admin">
+                                    Admin
+                                </span>
+
+                            {% else %}
+
+                                <span class="role-user">
+                                    User
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="user-actions">
+
+                            <a
+                                href="{% url 'edit_user' user.id %}"
+                                class="admin-btn"
+                            >
+                                Edit
+                            </a>
+
+
+                            <a
+                                href="{% url 'change_user_password' user.id %}"
+                                class="admin-btn"
+                            >
+                                Password
+                            </a>
+
+
+                            <a
+                                href="{% url 'delete_user' user.id %}"
+                                class="admin-btn delete"
+                            >
+                                Delete
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-users">
+
+                    <div class="empty-icon">
+                        👤
+                    </div>
+
+                    <h3>No Users</h3>
+
+                    <p>
+                        There are currently no users in your store.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="admin-footer">
+
+    © 2026 <span>Gear Ratio</span> · User Management
+
+</footer>
+
+</body>
+
+</html>

@@ -3,7 +3,34 @@ from django.urls import path, include
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('home.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+
+    # =========================
+    # DJANGO ADMIN
+    # =========================
+
+    path(
+        'admin/',
+        admin.site.urls
+    ),
+
+
+    # =========================
+    # HOME APPLICATION
+    # =========================
+
+    path(
+        '',
+        include('home.urls')
+    ),
+
+
+    # =========================
+    # AUTHENTICATION
+    # =========================
+
+    path(
+        'accounts/',
+        include('django.contrib.auth.urls')
+    ),
+
 ]

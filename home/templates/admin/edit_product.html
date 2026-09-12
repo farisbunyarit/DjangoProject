@@ -1,0 +1,325 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Product — Gear Ratio</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'admin.css' %}"
+    >
+
+</head>
+
+<body>
+
+
+<header class="admin-header">
+
+    <div class="admin-logo">
+        Gear <span>Ratio</span>
+    </div>
+
+    <div class="admin-title">
+        Edit Product
+    </div>
+
+</header>
+
+
+<main class="admin-container">
+
+
+    <div class="admin-welcome">
+
+        <h1>Edit Product</h1>
+
+        <p>
+            Update the product information.
+        </p>
+
+    </div>
+
+
+    <section class="admin-section">
+
+
+        <div class="admin-section-header">
+
+            <h2>{{ product.name }}</h2>
+
+            <div class="admin-actions">
+
+                <a
+                    href="{% url 'admin_products' %}"
+                    class="admin-btn"
+                >
+                    Back To Products
+                </a>
+
+                <a
+                    href="{% url 'admin_dashboard' %}"
+                    class="admin-btn"
+                >
+                    Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+
+        {% if error %}
+
+            <div class="form-error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <form
+            method="post"
+            class="admin-form"
+        >
+
+            {% csrf_token %}
+
+
+            <div class="form-group">
+
+                <label for="name">
+                    Product Name *
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{ product.name }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="4"
+                >{{ product.description }}</textarea>
+
+            </div>
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="price">
+                        Price *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        value="{{ product.price }}"
+                        step="0.01"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Category *
+                    </label>
+
+                    <select
+                        id="category"
+                        name="category"
+                        required
+                    >
+
+                        {% for category in categories %}
+
+                            <option
+                                value="{{ category.id }}"
+                                {% if category.id == product.category_id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ category.icon }} {{ category.name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="image">
+                    Image URL
+                </label>
+
+                <input
+                    type="url"
+                    id="image"
+                    name="image"
+                    value="{{ product.image }}"
+                    placeholder="https://example.com/product.jpg"
+                >
+
+            </div>
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="badge">
+                        Badge
+                    </label>
+
+                    <input
+                        type="text"
+                        id="badge"
+                        name="badge"
+                        value="{{ product.badge }}"
+                        placeholder="NEW"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="badge_class">
+                        Badge Class
+                    </label>
+
+                    <select
+                        id="badge_class"
+                        name="badge_class"
+                    >
+
+                        <option
+                            value=""
+                            {% if not product.badge_class %}
+                                selected
+                            {% endif %}
+                        >
+                            None
+                        </option>
+
+                        <option
+                            value="gold"
+                            {% if product.badge_class == 'gold' %}
+                                selected
+                            {% endif %}
+                        >
+                            Gold
+                        </option>
+
+                        <option
+                            value="dark"
+                            {% if product.badge_class == 'dark' %}
+                                selected
+                            {% endif %}
+                        >
+                            Dark
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="icon">
+                    Icon
+                </label>
+
+                <input
+                    type="text"
+                    id="icon"
+                    name="icon"
+                    maxlength="10"
+                    value="{{ product.icon }}"
+                    placeholder="🏍️"
+                >
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'admin_products' %}"
+                    class="admin-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="admin-btn gold"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+</main>
+
+
+<footer class="admin-footer">
+
+    © 2026 <span>Gear Ratio</span> · Edit Product
+
+</footer>
+
+
+</body>
+
+</html>

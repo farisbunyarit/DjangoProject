@@ -1,0 +1,121 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Delete User — Gear Ratio</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="{% static 'admin.css' %}">
+</head>
+
+<body>
+
+<header class="admin-header">
+
+    <div class="admin-logo">
+        Gear <span>Ratio</span>
+    </div>
+
+    <div class="admin-title">
+        Delete User
+    </div>
+
+</header>
+
+
+<main class="admin-container">
+
+    <div class="admin-welcome">
+
+        <h1>Delete User</h1>
+
+        <p>
+            Remove this user from your store.
+        </p>
+
+    </div>
+
+
+    <section class="admin-section">
+
+        <div class="admin-section-header">
+
+            <h2>Confirm Deletion</h2>
+
+            <div class="admin-actions">
+
+                <a
+                    href="{% url 'admin_users' %}"
+                    class="admin-btn"
+                >
+                    Back To Users
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-alert error">
+
+            <strong>Are you sure?</strong>
+
+            <p style="margin-top: 10px;">
+                You are about to permanently delete the user
+                <strong>{{ user_obj.username }}</strong>.
+            </p>
+
+            <p style="margin-top: 8px;">
+                This action cannot be undone.
+            </p>
+
+        </div>
+
+
+        <form
+            method="post"
+            class="form-actions"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="admin-btn delete"
+            >
+                Yes, Delete User
+            </button>
+
+
+            <a
+                href="{% url 'admin_users' %}"
+                class="admin-btn"
+            >
+                Cancel
+            </a>
+
+        </form>
+
+    </section>
+
+</main>
+
+
+<footer class="admin-footer">
+
+    © 2026 <span>Gear Ratio</span> · Delete User
+
+</footer>
+
+</body>
+
+</html>
