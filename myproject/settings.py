@@ -31,12 +31,17 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
+    host.strip()
+    for host in os.getenv(
+        'ALLOWED_HOSTS',
+        '127.0.0.1,localhost'
+    ).split(',')
+    if host.strip()
 ]
+
 
 
 # =========================
@@ -67,6 +72,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
 
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
 
@@ -193,7 +199,11 @@ USE_TZ = True
 # STATIC FILES
 # =========================
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
 
 
 # =========================
