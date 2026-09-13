@@ -6,6 +6,8 @@ from .models import (
     CartItem,
     Conversation,
     Message,
+    Order,
+    OrderItem,
 )
 
 
@@ -15,3 +17,5 @@ admin.site.register(Cart)
 admin.site.register(CartItem)
 admin.site.register(Conversation)
 admin.site.register(Message)
+admin.site.register(Order)
+admin.site.register(OrderItem)

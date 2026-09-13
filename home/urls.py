@@ -158,4 +158,11 @@ urlpatterns = [
         name='clear_cart'
     ),
 
+    path(
+      'checkout/',
+       views.checkout,
+       name='checkout'
+    ),
+
+
 ]

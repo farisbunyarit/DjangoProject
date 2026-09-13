@@ -3,6 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import SetPasswordForm
+from django.db import transaction
+from decimal import Decimal
+
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -17,6 +20,8 @@ from .models import (
     CartItem,
     Conversation,
     Message,
+    Order,
+    OrderItem,
 )
 from .serializers import (
     ProductSerializer,
@@ -44,6 +49,8 @@ def home(request):
             'badge',
             'badge_class',
             'icon',
+            'stock',
+
         )
     )
 
@@ -422,6 +429,11 @@ def edit_product(request, product_id):
             'price'
         )
 
+        product.stock = request.POST.get(
+            'stock',
+            0
+        )
+
         category_id = request.POST.get(
             'category'
         )
@@ -463,6 +475,7 @@ def edit_product(request, product_id):
             'categories': categories,
         }
     )
+
 
 
 # =========================
@@ -872,4 +885,157 @@ def ai_api(request):
                 'error': str(e)
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+# =========================
+# CHECKOUT / CREATE ORDER
+# =========================
+
+@login_required
+def checkout(request):
+
+    if request.method != 'POST':
+
+        return JsonResponse(
+            {
+                'success': False,
+                'error': 'Invalid request.'
+            },
+            status=400
+        )
+
+    try:
+
+        with transaction.atomic():
+
+            # =========================
+            # GET USER CART
+            # =========================
+
+            cart = Cart.objects.filter(
+                user=request.user
+            ).first()
+
+            if not cart:
+
+                return JsonResponse(
+                    {
+                        'success': False,
+                        'error': 'Your cart is empty.'
+                    },
+                    status=400
+                )
+
+            cart_items = list(
+                cart.items.select_related(
+                    'product'
+                )
+            )
+
+            if not cart_items:
+
+                return JsonResponse(
+                    {
+                        'success': False,
+                        'error': 'Your cart is empty.'
+                    },
+                    status=400
+                )
+
+            # =========================
+            # CHECK STOCK
+            # =========================
+
+            for item in cart_items:
+
+                if item.quantity > item.product.stock:
+
+                    return JsonResponse(
+                        {
+                            'success': False,
+                            'error': (
+                                f'Not enough stock for '
+                                f'{item.product.name}. '
+                                f'Only {item.product.stock} available.'
+                            )
+                        },
+                        status=400
+                    )
+
+            # =========================
+            # CALCULATE TOTAL
+            # =========================
+
+            subtotal = sum(
+                item.product.price * item.quantity
+                for item in cart_items
+            )
+
+            shipping = (
+                Decimal('0.00')
+                if subtotal >= Decimal('150.00')
+                else Decimal('9.99')
+            )
+
+
+            total = subtotal + shipping
+
+            # =========================
+            # CREATE ORDER
+            # =========================
+
+            order = Order.objects.create(
+                user=request.user,
+                status='pending'
+            )
+
+            # =========================
+            # CREATE ORDER ITEMS
+            # =========================
+
+            for item in cart_items:
+
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity,
+                    price=item.product.price
+                )
+
+                # =========================
+                # REDUCE STOCK
+                # =========================
+
+                item.product.stock -= item.quantity
+
+                item.product.save(
+                    update_fields=['stock']
+                )
+
+            # =========================
+            # CLEAR CART
+            # =========================
+
+            cart.items.all().delete()
+
+        # =========================
+        # SUCCESS RESPONSE
+        # =========================
+
+        return JsonResponse(
+            {
+                'success': True,
+                'order_id': order.id,
+                'total': float(total),
+            }
+        )
+
+    except Exception as e:
+
+        return JsonResponse(
+            {
+                'success': False,
+                'error': str(e)
+            },
+            status=500
         )

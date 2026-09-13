@@ -20,16 +20,31 @@ const savedCart = JSON.parse(
   document.getElementById('cart-items-data').textContent
 );
 
-savedCart.forEach(item => {
-  const product = products.find(p => p.id === item.product_id);
+const initialCart = Object.fromEntries(
+  savedCart
+    .map(item => {
+      const product = products.find(
+        p => Number(p.id) === Number(item.product_id)
+      );
 
-  if (product) {
-    cart[item.product_id] = {
-      product: product,
-      qty: item.quantity
-    };
-  }
-});
+      if (!product) {
+        return null;
+      }
+
+      return [
+        item.product_id,
+        {
+          product: product,
+          qty: Number(item.quantity)
+        }
+      ];
+    })
+    .filter(Boolean)
+);
+
+Object.assign(cart, initialCart);
+
+
 
 products.forEach(p => { quantities[p.id] = 1; });
 
@@ -368,16 +383,43 @@ function updateCartUI() {
 // ════════════════════════════════════════════ 
 //  CHECKOUT 
 // ════════════════════════════════════════════ 
-function checkout() {
-  const items = Object.values(cart);
-  const subtotal = items.reduce((s, i) => s + i.product.price * i.qty, 0);
-  const total = subtotal + (subtotal < 150 ? 9.99 : 0);
-  document.getElementById('modalTotal').textContent = `Order Total: $${total.toFixed(2)}`;
-  document.getElementById('modalOverlay').classList.add('open');
-  toggleCart();
-  Object.keys(cart).forEach(k => delete cart[k]);
-  updateCartUI();
+async function checkout() {
+  try {
+    const response = await fetch('/checkout/', {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken'),
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      showToast(data.error || 'Checkout failed.');
+      return;
+    }
+
+    document.getElementById('modalTotal').textContent =
+      `Order Total: $${data.total.toFixed(2)}`;
+
+    document.getElementById('modalOverlay').classList.add('open');
+
+    toggleCart();
+
+    Object.keys(cart).forEach(k => delete cart[k]);
+
+    updateCartUI();
+
+  } catch (error) {
+    console.error('Checkout error:', error);
+    showToast('Something went wrong during checkout.');
+  }
 }
+
+
+
+
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
 // ════════════════════════════════════════════ 
