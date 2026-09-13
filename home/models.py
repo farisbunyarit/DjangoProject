@@ -14,6 +14,7 @@ class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    stock = models.PositiveIntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = models.URLField(max_length=500, blank=True)
     badge = models.CharField(max_length=50, blank=True)
