@@ -4,7 +4,7 @@ import os
 
 
 class Command(BaseCommand):
-    help = 'Create admin user if it does not exist'
+    help = 'Create or update admin user'
 
     def handle(self, *args, **kwargs):
 
@@ -21,28 +21,26 @@ class Command(BaseCommand):
             return
 
         user, created = User.objects.get_or_create(
-            username=username,
-            defaults={
-                'email': email,
-                'is_staff': True,
-                'is_superuser': True,
-                'is_active': True,
-            }
+            username=username
         )
 
-        if created:
-            user.set_password(password)
-            user.save()
+        user.email = email
+        user.is_staff = True
+        user.is_superuser = True
+        user.is_active = True
 
+        user.set_password(password)
+        user.save()
+
+        if created:
             self.stdout.write(
                 self.style.SUCCESS(
                     f'Admin user "{username}" created successfully.'
                 )
             )
-
         else:
             self.stdout.write(
-                self.style.WARNING(
-                    f'Admin user "{username}" already exists.'
+                self.style.SUCCESS(
+                    f'Admin user "{username}" updated successfully.'
                 )
             )
